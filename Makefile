@@ -31,28 +31,28 @@ $(VENV_ACTIVATE):
 
 venv: $(VENV_ACTIVATE)    ## Create a new (empty) virtual environment
 
-start:
+start:                    ## Start the localstack container in the detached mode
 	$(LOCAL_ENV) docker compose up --build --detach --wait
 
-install: venv
+install: venv             ## Install the dependencies                 
 	$(VENV_RUN); $(PIP_CMD) install -r requirements.txt
 
-deploy:
+deploy:                   ## Deploy the stack to the localstack
 	$(VENV_RUN); $(LOCAL_ENV) cdklocal bootstrap --output ./cdk.local.out
 	$(VENV_RUN); $(LOCAL_ENV) cdklocal deploy --require-approval never --output ./cdk.local.out
 
-deploy-aws:
+deploy-aws:               ## Deploy the stack to the AWS 
 	$(VENV_RUN); $(CLOUD_ENV) cdk bootstrap
 	$(VENV_RUN); $(CLOUD_ENV) cdk deploy --require-approval never
 
-destroy:
+destroy:                  ## Stop the localstack container
 	docker-compose down
 
-destroy-aws: venv
+destroy-aws: venv         ## Destroy the stack from the AWS 
 	$(VENV_RUN); $(CLOUD_ENV) cdk destroy --require-approval never
 
-run:
+run:                      ## Run the application with the localstack
 	$(VENV_RUN); $(LOCAL_ENV) python run.py
 
-run-aws:
+run-aws:                  ## Run the application with the AWS 
 	$(VENV_RUN); $(CLOUD_ENV) python run.py

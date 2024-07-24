@@ -76,16 +76,14 @@ First, a full load replication task runs against the S3 source:
 -   Captures and logs Kinesis events for the uploaded data: 3 create table, 3 drop table, 10 inserts
 -   Logs `table_statistics` for the task
 
-Next, a CDC replication task runs against the RDS database:
+Next, a CDC replication task runs against the S3 :
 
 -   Creates three tables: `employee`, `department`, `project`
 -   Uploads sample CSV data for each table to the S3 bucket
 -   Captures and logs Kinesis events for the uploaded data: 3 create table, 4 inserts, 3 updates, 4 deletes, 1 table for `awsdms_apply_exceptions`
 -   Logs `table_statistics` for the task
 
-Two tasks perform full load replication on Dockerized MariaDB. The other two perform CDC replication on a MariaDB RDS database.
-
-All tasks target the same Kinesis Stream.
+Both the tasks target the same Kinesis Stream.
 
 ## Deploying on AWS
 
