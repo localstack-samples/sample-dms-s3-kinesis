@@ -32,7 +32,18 @@ $(VENV_ACTIVATE):
 venv: $(VENV_ACTIVATE)    ## Create a new (empty) virtual environment
 
 start:                    ## Start the localstack container in the detached mode
-	$(LOCAL_ENV) docker compose up --build --detach --wait
+	@test -n "${LOCALSTACK_AUTH_TOKEN}" || (echo "LOCALSTACK_AUTH_TOKEN is not set. Find your token at https://app.localstack.cloud/workspace/auth-token"; exit 1)
+	$(LOCAL_ENV) LOCALSTACK_AUTH_TOKEN=$(LOCALSTACK_AUTH_TOKEN) docker compose up --build --detach --wait
+
+stop:                     ## Stop the localstack container
+	docker compose down
+
+ready:                    ## Wait until LocalStack is ready
+	@echo Waiting on the LocalStack container...
+	@localstack wait -t 30 && echo LocalStack is ready to use! || (echo Gave up waiting on LocalStack, exiting. && exit 1)
+
+logs:                     ## Save the logs in a separate file
+	@localstack logs > logs.txt
 
 install: venv             ## Install the dependencies                 
 	$(VENV_RUN); $(PIP_CMD) install -r requirements.txt
