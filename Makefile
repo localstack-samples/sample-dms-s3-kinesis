@@ -38,19 +38,15 @@ start:                    ## Start the localstack container in the detached mode
 stop:                     ## Stop the localstack container
 	docker compose down
 
-ready:                    ## Wait until LocalStack is ready
-	@echo Waiting on the LocalStack container...
-	@localstack wait -t 30 && echo LocalStack is ready to use! || (echo Gave up waiting on LocalStack, exiting. && exit 1)
-
 logs:                     ## Save the logs in a separate file
-	@localstack logs > logs.txt
+	@lstk logs > logs.txt
 
 install: venv             ## Install the dependencies                 
 	$(VENV_RUN); $(PIP_CMD) install -r requirements.txt
 
 deploy:                   ## Deploy the stack to the localstack
-	$(VENV_RUN); $(LOCAL_ENV) cdklocal bootstrap --output ./cdk.local.out
-	$(VENV_RUN); $(LOCAL_ENV) cdklocal deploy --require-approval never --output ./cdk.local.out
+	$(VENV_RUN); $(LOCAL_ENV) lstk cdk bootstrap --output ./cdk.local.out
+	$(VENV_RUN); $(LOCAL_ENV) lstk cdk deploy --require-approval never --output ./cdk.local.out
 
 deploy-aws:               ## Deploy the stack to the AWS 
 	$(VENV_RUN); $(CLOUD_ENV) cdk bootstrap
