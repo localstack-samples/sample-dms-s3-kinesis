@@ -8,18 +8,17 @@ This scenario demonstrates how to use Database Migration Service (DMS) to create
 
 ## Pre-requisites
 
--   A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/getting-started/auth-token/) to activate LocalStack.
--   [`localstack` CLI](https://docs.localstack.cloud/getting-started/installation/#localstack-cli).
+-   A valid [LocalStack for AWS license](https://localstack.cloud/pricing). Your license provides a [`LOCALSTACK_AUTH_TOKEN`](https://docs.localstack.cloud/aws/getting-started/auth-token/) to activate LocalStack.
+-   [`lstk` CLI](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
 -   [Python 3.10](https://www.python.org/downloads/) & `pip`
 -   [Docker Compose](https://docs.docker.com/compose/install/)
--   [CDK](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/)  with the  [`cdklocal`](https://github.com/localstack/aws-cdk-local) wrapper.
+-   [CDK](https://docs.localstack.cloud/user-guide/integrations/aws-cdk/) with the [`lstk cdk` proxy](https://docs.localstack.cloud/aws/developer-tools/running-localstack/lstk/).
 
 Start LocalStack with the `LOCALSTACK_AUTH_TOKEN` pre-configured:
 
 ```bash
 export LOCALSTACK_AUTH_TOKEN=<your-auth-token>
 make start
-make ready
 ```
 
 The Docker Compose file will start LocalStack container and a MariaDB container. The MariaDB container will be used to showcase how to reach a database external to LocalStack.
